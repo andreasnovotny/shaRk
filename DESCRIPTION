@@ -1,0 +1,12 @@
+Package: shaRk
+Type: Package
+Title: Discover SHARKdata: A database for Swedish national marine monitoring
+Version: 0.1.0
+Author: Andreas Novotny
+Maintainer: The package maintainer <andreas.novotny@su.se>
+Description: A set of functions and tools to handle and explore the contents of the SHARK database (http://sharkdata.se/).
+This is a database for swedish national marine monitoring hosted by SMHI, the swedish institute for hydrology and meterology.
+
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
