@@ -1,0 +1,61 @@
+---
+title: "Explore 18S Taxonomy"
+author: "Andreas Novotny"
+output: flexdashboard::flex_dashboard
+runtime: shiny
+---
+
+```{r global, include=FALSE}
+# load data in 'global' chunk so it can be shared by all users of the dashboard
+library(shiny)
+library(tidyverse)
+library(shaRk)
+
+```
+
+Column {.sidebar}
+-----------------------------------------------------------------------
+
+### Some heading
+
+And a short description
+
+```{r}
+passwordInput(inputId = "password", label = "Password:")
+
+selectInput(inputId = "blocking", label = "Blocking Primer:", choices = c("Without"="Null", "With"="Cop10rc"))
+
+selectInput(inputId = "group", label = "Sample Type:",choices = c("Copepods"="Copepod", "Cladocera/Rotifer"="Cladocera/Rotifer", "Protozooa"="Protozooa", "Water"="Water"))
+
+selectInput(inputId = "level", label = "Taxonomic resolution:",choices = c("Kingdom"="Kingdom", "Supergroup"="Supergroup", "Division"="Division", "Class"="Class", "Order"="Order", "Family"="Family", "Genus"="Genus", "Species"="Species"))
+
+sliderInput(inputId = "num", label = "Prevalence filtering: (show the most important taxa only)", value = 5e-3, min = 0, max =1e-1)
+```
+
+Column
+-----------------------------------------------------------------------
+
+### GSome heading
+
+```{r}
+renderPlot({
+    
+    sub_sample <- ps@sam_data %>% 
+      subset(Blocking == input$blocking) %>%
+      subset(Group==input$group) %>% 
+      rownames()
+    
+    sub_tax <- ps@tax_table %>%
+      as.data.frame() %>% 
+      subset(Order != "Crustacea") %>% 
+      rownames()
+
+      plot1<- ps %>% 
+        prune_samples(sub_sample,.) %>% 
+        prune_taxa(sub_tax,.) %>% 
+        transform_sample_counts(function(x) x/sum(x)) %>%
+        filter_taxa(function(x) mean(x) > input$num, TRUE) %>%
+        plot_bar(input$level, "Abundance", input$level, facet_grid=sample_Genus~Season)
+      if(input$password == "") plot1
+  })
+```
