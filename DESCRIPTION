@@ -1,6 +1,7 @@
 Package: shaRk
 Type: Package
 Title: Discover SHARKdata: A database for Swedish national marine monitoring
+Date: 2019-04-17
 Version: 0.1.0
 Author: Andreas Novotny
 Maintainer: The package maintainer <andreas.novotny@su.se>

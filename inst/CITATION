@@ -1,0 +1,16 @@
+citHeader("To cite reports in publications, please use:")
+
+
+citEntry(entry = "manual",
+    title = "shaRk: A tidyverse approach to Swedish marine monitoring data",
+    author = "Andreas Novotny",
+    organization = "Stockholm University",
+    address = "Stockholm, Sweden",
+    note = "version 0.0.1",
+    year = "2019",
+    url = "http://github.com/andreasnovotny/shaRk",
+    textVersion  = paste("Novotny, A. (2019).",
+        "shaRk: A tidyverse approach to Swedish marine monitoring data.",
+        "version 0.0.1. Stockholm University. Stockholm, Sweden.",
+        "http://github.com/andreasnovotny/shaRk")
+)
