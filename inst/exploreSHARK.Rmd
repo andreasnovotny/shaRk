@@ -1,17 +1,40 @@
 ---
-title: "Explore 18S Taxonomy"
+title: "Explore SHARK"
 author: "Andreas Novotny"
 output: flexdashboard::flex_dashboard
 runtime: shiny
 ---
+
 
 ```{r global, include=FALSE}
 # load data in 'global' chunk so it can be shared by all users of the dashboard
 library(shiny)
 library(tidyverse)
 library(shaRk)
+library(plotly)
+zoo <- readRDS("zoo.rds")
+data(dyntaxa)
 
+zooplankton <- addDyntaxa(zoo, dyntaxa) %>%
+  annotateSHARK() %>% 
+  filter(Station != "R\xc5NE\xc5-2", Station != "\xc517", Station != "BY38 KARLS\xd6DJ", Station !=  "R\xc5NE\xc5-2")
+
+
+
+graph_theme<- theme(axis.text.y = element_text(size=12),
+                    axis.text.x = element_text(face='plain',
+                                               size=12),
+                    axis.title.y = element_text(size=14),
+                    axis.title.x = element_text(face='plain',
+                                                size=10,
+                                                vjust=-0.1,
+                                                hjust=0.6),
+                    legend.text = element_text(size = 14))
 ```
+
+Monthly means
+=====================================  
+
 
 Column {.sidebar}
 -----------------------------------------------------------------------
@@ -21,48 +44,74 @@ Column {.sidebar}
 And a short description
 
 ```{r}
-passwordInput(inputId = "password", label = "Password:")
 
-selectInput(inputId = "blocking", label = "Blocking Primer:", choices = c("Without"="Null", "With"="Cop10rc"))
 
-selectInput(inputId = "group", label = "Sample Type:",choices = c("Copepods"="Copepod", "Cladocera/Rotifer"="Cladocera/Rotifer", "Protozooa"="Protozooa", "Water"="Water"))
+selectInput(inputId = "unit", label = "Unit on x-axis:", choices = unique(zooplankton$unit))
 
-selectInput(inputId = "level", label = "Taxonomic resolution:",choices = c("Kingdom"="Kingdom", "Supergroup"="Supergroup", "Division"="Division", "Class"="Class", "Order"="Order", "Family"="Family", "Genus"="Genus", "Species"="Species"))
+#selectInput(inputId = "level", label = "Taxonomic resolution:",choices = c("Genus", "Kingdom","Phylum" ,"Class", "Order", "Family", "Species"))
 
-sliderInput(inputId = "num", label = "Prevalence filtering: (show the most important taxa only)", value = 5e-3, min = 0, max =1e-1)
+selectInput("taxa", "Select taxa of interest:", choices = unique(zooplankton$Genus), multiple = TRUE)
+
+#selectInput(inputId = "station", label = "Select station", choices = unique(zooplankton$station_name))
+
+textInput("station", "Write the name of the station:", value="BY5 BORNHOLMSDJ")
+selectInput("depth", "Select depth of interest", choices = unique(zooplankton$Depth))
+
+
 ```
+
+
+
 
 Column
 -----------------------------------------------------------------------
 
-### GSome heading
+### Zooplankton
+
+
 
 ```{r}
 renderPlot({
-    
-    sub_sample <- ps@sam_data %>% 
-      subset(Blocking == input$blocking) %>%
-      subset(Group==input$group) %>% 
-      rownames()
-    
-    sub_tax <- ps@tax_table %>%
-      as.data.frame() %>% 
-      subset(Order != "Crustacea") %>% 
-      rownames()
+  subset <- zooplankton %>%
+    filter(unit==input$unit,
+           Depth==30,
+           dev_stage_code!="NP",
+           Station==input$station,
+           Genus %in% input$taxa) %>%
+    group_by(Year, Month, Day, Genus, Station, Depth) %>% 
+    summarise(Value=sum(Value)) %>% 
+    group_by(Month, Genus, Station) %>%
+    summarise(Value=mean(Value))
 
-      plot1<- ps %>% 
-        prune_samples(sub_sample,.) %>% 
-        prune_taxa(sub_tax,.) %>% 
-        transform_sample_counts(function(x) x/sum(x)) %>%
-        filter_taxa(function(x) mean(x) > input$num, TRUE) %>%
-        plot_bar(input$level, "Abundance", input$level, facet_grid=sample_Genus~Season)
-      if(input$password == "") plot1
-  })
+  ggplot(subset, aes(x = Month, y = Value, group = Genus)) +
+    geom_line(aes(colour=Genus)) +
+    scale_x_continuous('Month',breaks=seq(1,12,by=1),limits=c(1,12))+ # rescale Y
+    scale_y_continuous(paste(input$unit))+ 
+    theme_bw() +
+    graph_theme
+  
+  
+  
+})
 ```
+
+
+### Phytoplankton
+
+Station Overview
+=====================================
+
+Column
+-----------------------------------------------------------------------
+
+![](http://havsmiljoinstitutet.se/digitalAssets/1418/1418567_1friavattnet_sid109.png)
+
+
+Column
+-----------------------------------------------------------------------
+
+Available stations are:
 
 ```{r}
-
-
-https://github.com/andreasnovotny/randomfiles/blob/master/2018-08-09_20.28_Ask%C3%B6.jpg
+as.data.frame(unique(zooplankton$station_name))
 ```
-

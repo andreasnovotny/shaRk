@@ -63,7 +63,7 @@ getSHARK <- function(Datatype, possibly=TRUE) {
 #'
 #' @export
 
-addDyntaxa <- function(data, dyntaxa) {
+addDyntaxa <- function(data, dyntaxa=data(dyntaxa)) {
 
   require("dplyr")
   merged_data <- left_join(data, dyntaxa, by="dyntaxa_id")
@@ -92,16 +92,16 @@ annotateSHARK <- function(data) {
   require("tidyverse")
 
   modified_data <- data %>%
-    transform(SDATE = as.Date(sample_date, format='%Y-%m-%d')) %>%
-    transform(Yr_mon = format(as.Date(SDATE), '%Y-%m')) %>%
-    transform(Month = as.numeric(format(as.Date(SDATE), "%m"))) %>%
-    transform(Year = format(as.Date(SDATE), "%Y")) %>%
-    transform(Day = format(as.Date(SDATE), "%d")) %>%
-    transform(Station = station_name) %>%
-    transform(Parameter = parameter) %>%
-    transform(Abundance = (as.double(reported_value))) %>%
-    transform(Depth = sample_max_depth_m) %>%
-    as.tibble()
+    mutate(SDATE = as.Date(sample_date, format='%Y-%m-%d'),
+           Yr_mon = format(as.Date(SDATE), '%Y-%m'),
+           Month = as.numeric(format(as.Date(SDATE), "%m")),
+           Year = format(as.Date(SDATE), "%Y"),
+           Day = format(as.Date(SDATE), "%d"),
+           Station = station_name,
+           Parameter = parameter,
+           Value = as.double(value),
+           Depth = sample_max_depth_m) %>%
+    as_tibble()
 
   return(modified_data)
 }
