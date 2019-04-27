@@ -12,14 +12,16 @@ library(shiny)
 library(tidyverse)
 library(shaRk)
 library(plotly)
-zoo <- readRDS("zoo.rds")
+
 data(dyntaxa)
 
-zooplankton <- addDyntaxa(zoo, dyntaxa) %>%
-  annotateSHARK() %>% 
-  filter(Station != "R\xc5NE\xc5-2", Station != "\xc517", Station != "BY38 KARLS\xd6DJ", Station !=  "R\xc5NE\xc5-2")
+zooplankton <- readRDS("zoo.rds") %>% 
+  addDyntaxa(dyntaxa) %>%
+  annotateSHARK()
 
-
+phytoplankton <- readRDS("phyto.rds") %>% 
+  addDyntaxa(dyntaxa) %>%
+  annotateSHARK()
 
 graph_theme<- theme(axis.text.y = element_text(size=12),
                     axis.text.x = element_text(face='plain',
@@ -32,35 +34,37 @@ graph_theme<- theme(axis.text.y = element_text(size=12),
                     legend.text = element_text(size = 14))
 ```
 
-Monthly means
+Monthly Means {data-icon="fa-chart-line"}
 =====================================  
 
 
 Column {.sidebar}
 -----------------------------------------------------------------------
 
-### Some heading
+### MONTHLY MEANS
 
-And a short description
+*Select your settings:*
+
+**Universal**
 
 ```{r}
-
-
-selectInput(inputId = "unit", label = "Unit on x-axis:", choices = unique(zooplankton$unit))
-
-#selectInput(inputId = "level", label = "Taxonomic resolution:",choices = c("Genus", "Kingdom","Phylum" ,"Class", "Order", "Family", "Species"))
-
-selectInput("taxa", "Select taxa of interest:", choices = unique(zooplankton$Genus), multiple = TRUE)
-
-#selectInput(inputId = "station", label = "Select station", choices = unique(zooplankton$station_name))
-
 textInput("station", "Write the name of the station:", value="BY5 BORNHOLMSDJ")
-selectInput("depth", "Select depth of interest", choices = unique(zooplankton$Depth))
-
-
+#selectInput("depth", "Select depth of interest", choices = unique(zooplankton$Depth))
 ```
 
 
+**Zooplankton**
+```{r}
+selectInput(inputId = "zoounit", label = "Unit on x-axis:", choices = unique(zooplankton$unit))
+selectInput("zootaxa", "Select taxa of interest:", choices = unique(zooplankton$Genus), multiple = TRUE)
+```
+
+**Phytoplankton**
+
+```{r}
+selectInput(inputId = "phytounit", label = "Unit on x-axis:", choices = unique(phytoplankton$unit))
+selectInput("phytotaxa", "Select taxa of interest:", choices = unique(phytoplankton$Genus), multiple = TRUE)
+```
 
 
 Column
@@ -73,11 +77,11 @@ Column
 ```{r}
 renderPlot({
   subset <- zooplankton %>%
-    filter(unit==input$unit,
-           Depth==30,
+    filter(unit==input$zoounit,
+           #Depth==30,
            dev_stage_code!="NP",
            Station==input$station,
-           Genus %in% input$taxa) %>%
+           Genus %in% input$zootaxa) %>%
     group_by(Year, Month, Day, Genus, Station, Depth) %>% 
     summarise(Value=sum(Value)) %>% 
     group_by(Month, Genus, Station) %>%
@@ -86,19 +90,42 @@ renderPlot({
   ggplot(subset, aes(x = Month, y = Value, group = Genus)) +
     geom_line(aes(colour=Genus)) +
     scale_x_continuous('Month',breaks=seq(1,12,by=1),limits=c(1,12))+ # rescale Y
-    scale_y_continuous(paste(input$unit))+ 
+    scale_y_continuous(paste(input$zoounit))+ 
     theme_bw() +
     graph_theme
-  
-  
-  
+
 })
 ```
 
 
 ### Phytoplankton
 
-Station Overview
+
+```{r}
+renderPlot({
+  subset <- phytoplankton %>%
+    filter(unit==input$phytounit,
+           #Depth==30,
+           Station==input$station,
+           Genus %in% input$phytotaxa) %>%
+    group_by(Year, Month, Day, Genus, Station, Depth) %>% 
+    summarise(Value=sum(Value)) %>% 
+    group_by(Month, Genus, Station) %>%
+    summarise(Value=mean(Value))
+
+  ggplot(subset, aes(x = Month, y = Value, group = Genus)) +
+    geom_line(aes(colour=Genus)) +
+    scale_x_continuous('Month',breaks=seq(1,12,by=1),limits=c(1,12))+ # rescale Y
+    scale_y_continuous(paste(input$phytounit))+ 
+    theme_bw() +
+    graph_theme
+
+})
+
+phytoplankton$station
+```
+
+Station Map {data-icon="fa-globe"}
 =====================================
 
 Column
