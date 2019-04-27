@@ -26,6 +26,7 @@ devtools::install_github("andreasnovotny/shaRk")
 
 The interactive data explorer can after installation be opened by typing:
 ```
+library(shaRk)
 exploreSHARK(download=TRUE)
 ```
 This function will first retrieve all available zooplankton and phytoplankton data from the SHARK database (OBS, this might be time consuming). Then it will open an interactive explorer in a new window, or in the web explorer.

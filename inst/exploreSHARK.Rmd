@@ -1,6 +1,5 @@
 ---
 title: "Explore SHARK"
-author: "Andreas Novotny"
 output: flexdashboard::flex_dashboard
 runtime: shiny
 ---
@@ -66,6 +65,9 @@ selectInput(inputId = "phytounit", label = "Unit on x-axis:", choices = unique(p
 selectInput("phytotaxa", "Select taxa of interest:", choices = unique(phytoplankton$Genus), multiple = TRUE)
 ```
 
+*Andreas Novotny*
+*Stockholm University*
+*andreas.novotny@su.se*
 
 Column
 -----------------------------------------------------------------------
