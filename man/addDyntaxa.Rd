@@ -4,7 +4,7 @@
 \alias{addDyntaxa}
 \title{Add taxonomic ranks to datasets from dyntaxa.se}
 \usage{
-addDyntaxa(data, dyntaxa)
+addDyntaxa(data, dyntaxa = data(dyntaxa))
 }
 \arguments{
 \item{data}{(Required) A string representing the type of data to be downloaded. (Only "Zooplankton" and "Phytoplankton" tested).}

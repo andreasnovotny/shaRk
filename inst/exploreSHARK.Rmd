@@ -11,15 +11,15 @@ runtime: shiny
 library(shiny)
 library(tidyverse)
 library(shaRk)
-library(plotly)
 
 data(dyntaxa)
+appDir <- system.file(package="shaRk")
 
-zooplankton <- readRDS("zoo.rds") %>% 
+zooplankton <- readRDS(file.path(appDir,"zoo.rds")) %>% 
   addDyntaxa(dyntaxa) %>%
   annotateSHARK()
 
-phytoplankton <- readRDS("phyto.rds") %>% 
+phytoplankton <- readRDS(file.path(appDir,"phyto.rds")) %>% 
   addDyntaxa(dyntaxa) %>%
   annotateSHARK()
 
