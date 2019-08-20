@@ -88,6 +88,10 @@ renderPlot({
     summarise(Value=sum(Value)) %>% 
     group_by(Month, Genus, Station) %>%
     summarise(Value=mean(Value))
+  
+  zooplankton
+  zooplankton <- group_by(zooplankton, Month, Genus, Station)
+  summarize(zooplankt
 
   ggplot(subset, aes(x = Month, y = Value, group = Genus)) +
     geom_line(aes(colour=Genus)) +
