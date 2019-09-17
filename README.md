@@ -1,4 +1,4 @@
-# shaRk V 0.1.0
+# shaRk V 0.1.1
 **A Tidyverse Approach to Swedish Marine Monitoring Data**
 
 
@@ -10,6 +10,11 @@
 
 This package contains functions to easilly download and access datasets from SHARKdata.
 SHARKdata is a database containing many years of environmental monitoring of the Baltic Sea. The database is hosted by SMHI (Swedish Institute for Metrology and Hydrology).
+
+## New in this version
+
+1. New implementation of addDyntaxa (see example file below)
+2. New handling of the Windows format at SMHI, now accepting ÅÄÖ.
 
 ## Installation
 

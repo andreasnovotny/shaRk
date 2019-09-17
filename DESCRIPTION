@@ -2,7 +2,7 @@ Package: shaRk
 Type: Package
 Title: shaRk: A tidyverse approach to Swedish natiolal monitoring data
 Date: 2019-04-17
-Version: 0.1.0
+Version: 0.1.1
 Author: Andreas Novotny
 Maintainer: The package maintainer <andreas.novotny@su.se>
 Description: A set of functions and tools to handle and explore the contents of the SHARK database (http://sharkdata.se/). This is a database for swedish national marine monitoring hosted by SMHI, the swedish institute for hydrology and meterology.
