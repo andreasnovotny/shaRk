@@ -19,7 +19,7 @@ getSHARK <- function(Datatype, possibly=TRUE) {
   # Function for downloading each separate dataset from SHARKdata
   download <- function(name) {
     tsv <- paste('http://sharkdata.se/datasets/',name,'/data.txt',sep='') %>%  # Define the dataset name and ULR
-      read_tsv() %>% # Download each dataseta, as tab separated tibble
+      read_tsv(locale = locale(encoding = "windows-1252")) %>% # Download each dataseta, as tab separated tibble
       mutate_all(as.character) # Set datatype to character.
     return(tsv)
   } # End of "download" function
@@ -63,7 +63,8 @@ getSHARK <- function(Datatype, possibly=TRUE) {
 #'
 #' @export
 
-addDyntaxa <- function(data, dyntaxa=data(dyntaxa)) {
+addDyntaxa <- function(data) {
+  data(dyntaxa)
 
   require("dplyr")
   merged_data <- left_join(data, dyntaxa, by="dyntaxa_id")
@@ -82,7 +83,7 @@ addDyntaxa <- function(data, dyntaxa=data(dyntaxa)) {
 #' @examples
 #' data(dyntaxa)
 #' data <- getSHARK("Phytoplankton") %>%
-#' addDyntaxa(dyntaxa) %>%
+#' addDyntaxa() %>%
 #' annotateSHARK()
 #'
 #' @export

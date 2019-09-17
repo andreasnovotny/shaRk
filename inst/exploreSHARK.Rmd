@@ -11,15 +11,14 @@ library(shiny)
 library(tidyverse)
 library(shaRk)
 
-data(dyntaxa)
 appDir <- system.file(package="shaRk")
 
 zooplankton <- readRDS(file.path(appDir,"zoo.rds")) %>% 
-  addDyntaxa(dyntaxa) %>%
+  addDyntaxa() %>%
   annotateSHARK()
 
 phytoplankton <- readRDS(file.path(appDir,"phyto.rds")) %>% 
-  addDyntaxa(dyntaxa) %>%
+  addDyntaxa() %>%
   annotateSHARK()
 
 graph_theme<- theme(axis.text.y = element_text(size=12),
@@ -89,10 +88,6 @@ renderPlot({
     group_by(Month, Genus, Station) %>%
     summarise(Value=mean(Value))
   
-  zooplankton
-  zooplankton <- group_by(zooplankton, Month, Genus, Station)
-  summarize(zooplankt
-
   ggplot(subset, aes(x = Month, y = Value, group = Genus)) +
     geom_line(aes(colour=Genus)) +
     scale_x_continuous('Month',breaks=seq(1,12,by=1),limits=c(1,12))+ # rescale Y

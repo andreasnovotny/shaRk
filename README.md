@@ -57,8 +57,6 @@ Each time you install a new version of the shaRk, or want to access an updated v
 ### Example
 
 ```
-data(dyntaxa)
-
 zoodata <- getSHARK("Zooplankton") %>% 
   addDyntaxa() %>%
   annotateSHARK()
