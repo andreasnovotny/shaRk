@@ -57,9 +57,8 @@ getSHARK <- function(Datatype, possibly=TRUE) {
 #' @return A dataframe.
 #' @examples
 #'
-#' data(dyntaxa)
 #' data <- getSHARK("Phytoplankton") %>%
-#' addDyntaxa(dyntaxa)
+#'    addDyntaxa()
 #'
 #' @export
 
@@ -81,10 +80,9 @@ addDyntaxa <- function(data) {
 #' @param possibly (Optional, default=TRUE) Logical. If TRUE: datasets that does not fit the format (cannot be read as TSV) will not be downloaded. If FALSE: the function will stop if an errournous dataset is encountered.
 #' @return Annotated dataframe.
 #' @examples
-#' data(dyntaxa)
 #' data <- getSHARK("Phytoplankton") %>%
-#' addDyntaxa() %>%
-#' annotateSHARK()
+#'    addDyntaxa() %>%
+#'    annotateSHARK()
 #'
 #' @export
 
