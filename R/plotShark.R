@@ -35,7 +35,7 @@
 
 dailyInterpretation <- function(data, taxa="Genus") {
 
-  require(tidyverse, xts)
+  require(tidyverse, xts, zoo)
 
   allDates <- seq.Date(                                           #Creating a sequence of days for dataset
     min(as.Date(data$SDATE)),
