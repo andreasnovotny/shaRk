@@ -4,7 +4,7 @@
 \alias{addDyntaxa}
 \title{Add taxonomic ranks to datasets from dyntaxa.se}
 \usage{
-addDyntaxa(data, dyntaxa = data(dyntaxa))
+addDyntaxa(data)
 }
 \arguments{
 \item{data}{(Required) A string representing the type of data to be downloaded. (Only "Zooplankton" and "Phytoplankton" tested).}
@@ -19,8 +19,7 @@ Add taxonomic ranks to datasets from dyntaxa.se
 }
 \examples{
 
-data(dyntaxa)
 data <- getSHARK("Phytoplankton") \%>\%
-addDyntaxa(dyntaxa)
+   addDyntaxa()
 
 }

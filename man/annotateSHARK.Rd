@@ -18,9 +18,8 @@ Annotated dataframe.
 Annotate the downloaded dataset
 }
 \examples{
-data(dyntaxa)
 data <- getSHARK("Phytoplankton") \%>\%
-addDyntaxa(dyntaxa) \%>\%
-annotateSHARK()
+   addDyntaxa() \%>\%
+   annotateSHARK()
 
 }

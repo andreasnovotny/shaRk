@@ -1,18 +1,13 @@
 Package: shaRk
 Type: Package
 Title: shaRk: A tidyverse approach to Swedish natiolal monitoring data
-Date: 2019-04-17
-Version: 0.1.1
+Date: 2020-03-09
+Version: 0.1.2
 Author: Andreas Novotny
 Maintainer: The package maintainer <andreas.novotny@su.se>
 Description: A set of functions and tools to handle and explore the contents of the SHARK database (http://sharkdata.se/). This is a database for swedish national marine monitoring hosted by SMHI, the swedish institute for hydrology and meterology.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Imports: flexdashboard, httr, jsonlite, shiny, tidyverse
-
-
-
-
-
