@@ -28,8 +28,8 @@ getSHARK <- function(Datatype, possibly=TRUE) {
 
     possibly_download <- possibly(download, "Malfunctioning_dataset")
 
-    data <-fromJSON('http://sharkdata.se/datasets/list.json') %>% # Download metdata file overwiew from SHARK data
-      filter(datatype %in% Datatype) %>% # Filter out the datasets of interest
+    data <- read_delim("http://sharkdata.se/datasets/table.txt", delim = "\t") %>%
+      filter(Datatype == datatype) %>% pull(1) %>%  # Filter out the datasets of interest
       .$dataset_name %>% # Get list of dataset names
       map(possibly_download) # Download each dataaset from the list (apply function above)
 
