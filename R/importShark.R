@@ -12,7 +12,6 @@
 
 getSHARK <- function(Datatype, possibly=TRUE) {
 
-  require('jsonlite')
   require('httr')
   require('tidyverse')
 
@@ -30,7 +29,6 @@ getSHARK <- function(Datatype, possibly=TRUE) {
 
     data <- read_delim("http://sharkdata.se/datasets/table.txt", delim = "\t") %>%
       filter(Datatype == Datatype) %>% pull(1) %>%  # Filter out the datasets of interest
-      .$dataset_name %>% # Get list of dataset names
       map(possibly_download) # Download each dataaset from the list (apply function above)
 
     data_combined <- data[sapply(data, function(d)length(d)!=1)] %>%  #Remove errornous data
@@ -39,9 +37,8 @@ getSHARK <- function(Datatype, possibly=TRUE) {
 
   } else { #### possibly == FALSE: Stop if error in any dataset
 
-    data_combined <-fromJSON('http://sharkdata.se/datasets/list.json') %>% # Download metdata file overwiew from SHARK data
-      filter(datatype %in% Datatype) %>% # Filter out the datasets of interest
-      .$dataset_name %>% # Get list of dataset names
+    data_combined <-read_delim("http://sharkdata.se/datasets/table.txt", delim = "\t") %>%# Download metdata file overwiew from SHARK data
+      filter(datatype %in% Datatype) %>% pull(1) %>% # Filter out the datasets of interest
       map(download) %>%  # Download each dataaset from the list (apply function above)
       bind_rows() # Combine all th datasets
   }
