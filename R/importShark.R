@@ -29,7 +29,7 @@ getSHARK <- function(Datatype, possibly=TRUE) {
     possibly_download <- possibly(download, "Malfunctioning_dataset")
 
     data <- read_delim("http://sharkdata.se/datasets/table.txt", delim = "\t") %>%
-      filter(Datatype == datatype) %>% pull(1) %>%  # Filter out the datasets of interest
+      filter(Datatype == Datatype) %>% pull(1) %>%  # Filter out the datasets of interest
       .$dataset_name %>% # Get list of dataset names
       map(possibly_download) # Download each dataaset from the list (apply function above)
 
