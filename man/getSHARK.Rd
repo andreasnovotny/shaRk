@@ -4,10 +4,10 @@
 \alias{getSHARK}
 \title{Downloads current monitoring data from SHARKdata}
 \usage{
-getSHARK(Datatype, possibly = TRUE)
+getSHARK(datatype, possibly = TRUE)
 }
 \arguments{
-\item{Datatype}{(Required) A string representing the type of data to be downloaded. (Only "Zooplankton" and "Phytoplankton" tested).}
+\item{datatype}{(Required) A string representing the type of data to be downloaded. (Only "Zooplankton" and "Phytoplankton" tested).}
 
 \item{possibly}{(Optional, default=TRUE) Logical. If TRUE: datasets that does not fit the format (cannot be read as TSV) will not be downloaded. If FALSE: the function will stop if an errournous dataset is encountered.}
 }

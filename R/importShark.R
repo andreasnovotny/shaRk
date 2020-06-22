@@ -2,7 +2,7 @@
 #'
 #' This function downloads all current data at sharkdata.se by data type.
 #'
-#' @param Datatype (Required) A string representing the type of data to be downloaded. (Only "Zooplankton" and "Phytoplankton" tested).
+#' @param datatype (Required) A string representing the type of data to be downloaded. (Only "Zooplankton" and "Phytoplankton" tested).
 #' @param possibly (Optional, default=TRUE) Logical. If TRUE: datasets that does not fit the format (cannot be read as TSV) will not be downloaded. If FALSE: the function will stop if an errournous dataset is encountered.
 #' @return A dataframe.
 #' @examples
@@ -10,7 +10,7 @@
 #'
 #' @export
 
-getSHARK <- function(Datatype, possibly=TRUE) {
+getSHARK <- function(datatype, possibly=TRUE) {
 
   require('httr')
   require('tidyverse')
@@ -28,7 +28,7 @@ getSHARK <- function(Datatype, possibly=TRUE) {
     possibly_download <- possibly(download, "Malfunctioning_dataset")
 
     data <- read_delim("http://sharkdata.se/datasets/table.txt", delim = "\t") %>%
-      filter(Datatype == Datatype) %>% pull(1) %>%  # Filter out the datasets of interest
+      filter(Datatype == datatype) %>% pull(1) %>%  # Filter out the datasets of interest
       map(possibly_download) # Download each dataaset from the list (apply function above)
 
     data_combined <- data[sapply(data, function(d)length(d)!=1)] %>%  #Remove errornous data
@@ -38,7 +38,7 @@ getSHARK <- function(Datatype, possibly=TRUE) {
   } else { #### possibly == FALSE: Stop if error in any dataset
 
     data_combined <-read_delim("http://sharkdata.se/datasets/table.txt", delim = "\t") %>%# Download metdata file overwiew from SHARK data
-      filter(datatype %in% Datatype) %>% pull(1) %>% # Filter out the datasets of interest
+      filter(Datatype %in% datatype) %>% pull(1) %>% # Filter out the datasets of interest
       map(download) %>%  # Download each dataaset from the list (apply function above)
       bind_rows() # Combine all th datasets
   }
