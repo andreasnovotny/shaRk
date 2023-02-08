@@ -3,7 +3,7 @@
 
 
 - Author: Andreas Novotny
-- Contact: andreas.novotny@su.se
+- Contact: mail@andreasnovotny.se
 - source: https://github.com/andreasnovotny/shaRk
 
 *Plankton Food Webs, Stockholm University 2019*
