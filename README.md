@@ -1,3 +1,14 @@
+# Important note on deprecation
+
+SMHI has released their own R package for accessing the SHARK database.
+
+Please find it on GitHub:  https://sharksmhi.github.io/SHARK4R/
+
+or on CRAN: https://doi.org/10.32614/CRAN.package.SHARK4R
+
+I strongly recommend using the official SHARK4R package.
+
+
 # shaRk V 0.1.3
 **A Tidyverse Approach to Swedish Marine Monitoring Data**
 
